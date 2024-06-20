@@ -20,12 +20,6 @@ class Building:
 
 
 if __name__ == '__main__':
-    # Чтобы соответствовать PEP8, решил сначала создать 40 зданий, а затем уже
-    # пробежаться по списку и создать 40 объектов класса Building, и вывести их на экран
-    buildings = []
-    for i in range(1, 41):
-        buildings.append(f'building_{i}')
-
-    for building in buildings:
+    for _ in range(40):
         building = Building()
         print(building)
