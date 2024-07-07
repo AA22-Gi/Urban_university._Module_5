@@ -92,6 +92,7 @@ class UrTube:
         for user in self.users:
             if nickname == user.nickname and hash(password) == hash(user.password):
                 self.current_user = user
+                return
 
     def log_out(self):
         self.current_user = None
