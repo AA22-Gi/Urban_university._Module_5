@@ -83,10 +83,10 @@ class UrTube:
             if nickname == user.nickname:
                 print(f'Пользователь {nickname} уже существует')
                 return
+                
         new_user = User(nickname, password, age)
         self.users.append(new_user)
         self.current_user = new_user
-        print(f'Пользователь {nickname} зарегистрирован')
 
     def log_in(self, nickname: str, password: str):
         for user in self.users:
@@ -96,9 +96,9 @@ class UrTube:
     def log_out(self):
         self.current_user = None
 
-    def add(self, *args: Video):
+    def add(self, *args):
         for video_object in args:
-            if video_object not in self.videos:
+            if video_object.title not in [v.title for v in self.videos]:
                 self.videos.append(video_object)
 
     def get_videos(self, word: str):
@@ -109,17 +109,22 @@ class UrTube:
         return videos_title
 
     def watch_video(self, name_video: str):
-        if self.current_user and self.current_user.age < 18:
-            print('Вам нет 18 лет, пожалуйста покиньте страницу')
-        elif self.current_user:
-            for video_object in self.videos:
-                if name_video == video_object.title:
-                    for i in range(1, 11):
-                        print(i, end=' ')
-                        sleep(1)
-                    print('Конец видео')
-        else:
-            print('Войдите в аккаунт, чтобы смотреть видео')
+        if not self.current_user:
+            print("Войдите в аккаунт, чтобы смотреть видео")
+            return
+
+        for video in self.videos:
+            if video.title == name_video:
+                if video.adult_mode and self.current_user.age < 18:
+                    print("Вам нет 18 лет, пожалуйста покиньте страницу")
+                    return
+
+                for i in range(video.duration):
+                    print(i + 1, end=' ')
+                    sleep(1)
+                print("конец видео")
+                video.time_now = 0
+                return
 
 
 if __name__ == '__main__':
